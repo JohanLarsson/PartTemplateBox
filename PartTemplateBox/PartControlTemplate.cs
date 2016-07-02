@@ -37,32 +37,50 @@ namespace PartTemplateBox
                 OnBarPartChanged),
             OnVerifyTemplate);
 
+        private static readonly DependencyPropertyKey CurrentPropertyKey = DependencyProperty.RegisterReadOnly(
+            "Current",
+            typeof(ControlTemplate),
+            typeof(PartControlTemplate),
+            new PropertyMetadata(default(ControlTemplate)));
+
+        public static readonly DependencyProperty CurrentProperty = CurrentPropertyKey.DependencyProperty;
+
         public ControlTemplate Root
         {
-            get { return (ControlTemplate) GetValue(RootProperty); }
-            set { SetValue(RootProperty, value); }
+            get { return (ControlTemplate)this.GetValue(RootProperty); }
+            set {
+                this.SetValue(RootProperty, value); }
         }
 
         public ControlTemplate FooPart
         {
-            get { return (ControlTemplate)GetValue(FooPartProperty); }
-            set { SetValue(FooPartProperty, value); }
+            get { return (ControlTemplate)this.GetValue(FooPartProperty); }
+            set {
+                this.SetValue(FooPartProperty, value); }
         }
 
         public ControlTemplate BarPart
         {
-            get { return (ControlTemplate)GetValue(BarPartProperty); }
-            set { SetValue(BarPartProperty, value); }
+            get { return (ControlTemplate)this.GetValue(BarPartProperty); }
+            set {
+                this.SetValue(BarPartProperty, value); }
         }
 
         //public ControlTemplate Current => CreateTemplate();
 
         void ISupportInitialize.BeginInit()
         {
+            this.Current = this.CreateTemplate();
         }
 
         void ISupportInitialize.EndInit()
         {
+        }
+
+        public ControlTemplate Current
+        {
+            get { return (ControlTemplate)this.GetValue(CurrentProperty); }
+            protected set { this.SetValue(CurrentPropertyKey, value); }
         }
 
         internal static string GetSinglePart(string xaml, string partName)
@@ -106,22 +124,22 @@ namespace PartTemplateBox
 
         private static void OnBarPartChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            Dump((ControlTemplate)e.NewValue, "BarPart");
+            Dump((ControlTemplate)e.NewValue, BarPartProperty.Name);
         }
 
         private ControlTemplate CreateTemplate()
         {
-            var rootElement = XElement.Parse(XamlWriter.Save(Root));
+            var rootElement = XElement.Parse(XamlWriter.Save(this.Root));
             //rootElement.DescendantNodes().OfType<XElement>().Where(e=>e.Attribute())
             var template = (ControlTemplate)XamlReader.Parse(rootElement.ToString());
             return template;
         }
 
-        private static void Dump(ControlTemplate template, [CallerMemberName] string caller = null)
+        private static void Dump(ControlTemplate template, string templateName = null)
         {
             if (template != null)
             {
-                File.WriteAllText($@"C:\Temp\Parts\{caller}.xml", XamlWriter.Save(template));
+                File.WriteAllText($@"C:\Temp\Parts\{templateName}.xml", XamlWriter.Save(template));
             }
         }
     }
