@@ -43,7 +43,6 @@
                                     <TextBox x:Name="PART_Bar" Text="{Binding Name, Source={x:Type Binding}, Mode=OneWay}" />
                                 </ControlTemplate>
                             </local:PartControlTemplate.BarPart>
-
                         </local:PartControlTemplate>
                     </Setter.Value>
                 </Setter>

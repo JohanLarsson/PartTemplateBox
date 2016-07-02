@@ -3,8 +3,6 @@ using System.IO;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Windows;
-using System.Windows.Threading;
-using System.Xaml;
 using System.Xml.Linq;
 using XamlParseException = System.Windows.Markup.XamlParseException;
 using XamlWriter = System.Windows.Markup.XamlWriter;
@@ -34,7 +32,9 @@ namespace PartTemplateBox
             "BarPart", 
             typeof(ControlTemplate), 
             typeof(PartControlTemplate), 
-            new PropertyMetadata(default(ControlTemplate)),
+            new PropertyMetadata(
+                default(ControlTemplate), 
+                OnBarPartChanged),
             OnVerifyTemplate);
 
         public ControlTemplate Root
@@ -97,7 +97,6 @@ namespace PartTemplateBox
             {
                 if (typeof(FooControl).IsAssignableFrom(template.TargetType))
                 {
-                    Dump(template,"meh");
                     return true;
                 }
             }
@@ -105,9 +104,9 @@ namespace PartTemplateBox
             return false;
         }
 
-        private static void Dump(ControlTemplate o, [CallerMemberName] string caller = null)
+        private static void OnBarPartChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            File.WriteAllText($@"C:\Temp\Parts\{caller}.xml", XamlWriter.Save(o));
+            Dump((ControlTemplate)e.NewValue, "BarPart");
         }
 
         private ControlTemplate CreateTemplate()
@@ -116,6 +115,14 @@ namespace PartTemplateBox
             //rootElement.DescendantNodes().OfType<XElement>().Where(e=>e.Attribute())
             var template = (ControlTemplate)XamlReader.Parse(rootElement.ToString());
             return template;
+        }
+
+        private static void Dump(ControlTemplate template, [CallerMemberName] string caller = null)
+        {
+            if (template != null)
+            {
+                File.WriteAllText($@"C:\Temp\Parts\{caller}.xml", XamlWriter.Save(template));
+            }
         }
     }
 }

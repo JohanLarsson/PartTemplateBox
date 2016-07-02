@@ -1,12 +1,7 @@
-﻿using System;
-using System.IO;
-using System.Linq;
-using System.Xaml;
-using System.Xml;
-using System.Xml.Linq;
-
-namespace PartTemplateBox.Tests
+﻿namespace PartTemplateBox.Tests
 {
+    using System.Xaml;
+
     using NUnit.Framework;
 
     public class UnitTest1
