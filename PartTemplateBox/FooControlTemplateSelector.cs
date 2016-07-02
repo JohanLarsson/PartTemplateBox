@@ -10,7 +10,14 @@
 
         public override void UpdateCurrentTemplate(FooControl container)
         {
-            throw new System.NotImplementedException();
+            if (this.Current == this.StringTemplate)
+            {
+                this.Current = this.BoolTemplate;
+            }
+            else
+            {
+                this.Current = this.StringTemplate;
+            }
         }
     }
 }

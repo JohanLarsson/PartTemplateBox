@@ -16,7 +16,7 @@
             {
                 return this.current;
             }
-            private set
+            protected set
             {
                 if (value == this.current)
                 {
@@ -29,5 +29,16 @@
         }
 
         public abstract void UpdateCurrentTemplate(T container);
+
+        protected static bool IsValidTemplate(ControlTemplate template)
+        {
+            var targetType = template?.TargetType;
+            if (targetType == null)
+            {
+                return false;
+            }
+
+            return typeof(T).IsAssignableFrom(targetType);
+        }
     }
 }

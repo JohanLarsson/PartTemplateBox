@@ -11,5 +11,10 @@
         {
             this.InitializeComponent();
         }
+
+        private void OnSwapTemplateClick(object sender, RoutedEventArgs e)
+        {
+            this.FooControl.ChangeTemplate();
+        }
     }
 }

@@ -6,7 +6,7 @@
     public class FooControl : Control
     {
         public static readonly DependencyProperty StringTemplateProperty = DependencyProperty.Register(
-            "StringTemplate", 
+            nameof(StringTemplate),
             typeof(ControlTemplate),
             typeof(FooControl),
             new PropertyMetadata(default(ControlTemplate)));
@@ -23,9 +23,9 @@
             typeof(FooControl),
             new PropertyMetadata(default(FooControlTemplateSelector)));
 
-        public PartControlTemplate StringTemplate
+        public ControlTemplate StringTemplate
         {
-            get { return (PartControlTemplate)this.GetValue(StringTemplateProperty); }
+            get { return (ControlTemplate)this.GetValue(StringTemplateProperty); }
             set { this.SetValue(StringTemplateProperty, value); }
         }
 
@@ -39,6 +39,16 @@
         {
             get { return (FooControlTemplateSelector)this.GetValue(ControlTemplateSelectorProperty); }
             set { this.SetValue(ControlTemplateSelectorProperty, value); }
+        }
+
+        public void ChangeTemplate()
+        {
+            this.ControlTemplateSelector.UpdateCurrentTemplate(this);
+        }
+
+        public override void OnApplyTemplate()
+        {
+            base.OnApplyTemplate();
         }
     }
 }
