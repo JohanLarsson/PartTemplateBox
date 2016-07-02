@@ -2,6 +2,7 @@
 {
     using System.ComponentModel;
     using System.Windows.Controls;
+    using System.Xaml;
 
     public abstract class ControlTemplateSelector<T> : INotifyPropertyChanged
         where T : Control
@@ -10,7 +11,7 @@
 
         public event PropertyChangedEventHandler PropertyChanged;
 
-        public ControlTemplate Current
+        public virtual ControlTemplate Current
         {
             get
             {
@@ -29,6 +30,14 @@
         }
 
         public abstract void UpdateCurrentTemplate(T container);
+
+        protected static void AssertIsValidTemplate(ControlTemplate template)
+        {
+            if (!IsValidTemplate(template))
+            {
+                throw new XamlException($"Not a valid template for {typeof(T).Name}");
+            }
+        }
 
         protected static bool IsValidTemplate(ControlTemplate template)
         {
