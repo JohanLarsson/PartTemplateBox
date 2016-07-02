@@ -11,43 +11,9 @@
     <Grid>
         <Grid.Resources>
             <Style TargetType="{x:Type local:FooControl}">
-                <Setter Property="PartTemplate">
-                    <Setter.Value>
-                        <local:PartControlTemplate>
-                            <local:PartControlTemplate.Root>
-                                <ControlTemplate TargetType="{x:Type local:FooControl}">
-                                    <Grid>
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition />
-                                            <ColumnDefinition />
-                                        </Grid.ColumnDefinitions>
-                                        <TextBlock x:Name="PART_Foo"
-                                                   Grid.Column="0"
-                                                   Text="foo" />
-                                        <TextBlock x:Name="PART_Bar"
-                                                   Grid.Column="1"
-                                                   Text="bar" />
-                                    </Grid>
-                                </ControlTemplate>
-                            </local:PartControlTemplate.Root>
 
 
-                            <local:PartControlTemplate.FooPart>
-                                <ControlTemplate TargetType="{x:Type local:FooControl}">
-                                    <TextBox x:Name="PART_Foo" Text="{TemplateBinding ActualWidth}" />
-                                </ControlTemplate>
-                            </local:PartControlTemplate.FooPart>
-
-                            <local:PartControlTemplate.BarPart>
-                                <ControlTemplate TargetType="{x:Type local:FooControl}">
-                                    <TextBox x:Name="PART_Bar" Text="{Binding Name, Source={x:Type Binding}, Mode=OneWay}" />
-                                </ControlTemplate>
-                            </local:PartControlTemplate.BarPart>
-                        </local:PartControlTemplate>
-                    </Setter.Value>
-                </Setter>
-
-                <Setter Property="Template" Value="{Binding PartTemplate.Current, RelativeSource={RelativeSource Self}}" />
+                <Setter Property="Template" Value="{Binding StringTemplate.Current, RelativeSource={RelativeSource Self}}" />
             </Style>
         </Grid.Resources>
         <local:FooControl />

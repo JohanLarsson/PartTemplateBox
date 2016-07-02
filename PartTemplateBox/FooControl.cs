@@ -5,16 +5,40 @@
 
     public class FooControl : Control
     {
-        public static readonly DependencyProperty PartTemplateProperty = DependencyProperty.Register(
-            "PartTemplate", 
-            typeof(PartControlTemplate),
+        public static readonly DependencyProperty StringTemplateProperty = DependencyProperty.Register(
+            "StringTemplate", 
+            typeof(ControlTemplate),
             typeof(FooControl),
-            new PropertyMetadata(default(PartControlTemplate)));
+            new PropertyMetadata(default(ControlTemplate)));
 
-        public PartControlTemplate PartTemplate
+        public static readonly DependencyProperty BoolTemplateProperty = DependencyProperty.Register(
+            nameof(BoolTemplate),
+            typeof(ControlTemplate),
+            typeof(FooControl),
+            new PropertyMetadata(default(ControlTemplate)));
+
+        public static readonly DependencyProperty ControlTemplateSelectorProperty = DependencyProperty.Register(
+            nameof(ControlTemplateSelector),
+            typeof(FooControlTemplateSelector),
+            typeof(FooControl),
+            new PropertyMetadata(default(FooControlTemplateSelector)));
+
+        public PartControlTemplate StringTemplate
         {
-            get { return (PartControlTemplate) GetValue(PartTemplateProperty); }
-            set { SetValue(PartTemplateProperty, value); }
+            get { return (PartControlTemplate)this.GetValue(StringTemplateProperty); }
+            set { this.SetValue(StringTemplateProperty, value); }
+        }
+
+        public ControlTemplate BoolTemplate
+        {
+            get { return (ControlTemplate)this.GetValue(BoolTemplateProperty); }
+            set { this.SetValue(BoolTemplateProperty, value); }
+        }
+
+        public FooControlTemplateSelector ControlTemplateSelector
+        {
+            get { return (FooControlTemplateSelector)this.GetValue(ControlTemplateSelectorProperty); }
+            set { this.SetValue(ControlTemplateSelectorProperty, value); }
         }
     }
 }
