@@ -21,11 +21,16 @@
                                             <ColumnDefinition />
                                             <ColumnDefinition />
                                         </Grid.ColumnDefinitions>
-                                        <ContentPresenter x:Name="PART_Foo" Grid.Column="0" />
-                                        <ContentPresenter x:Name="PART_Bar" Grid.Column="1" />
+                                        <TextBlock x:Name="PART_Foo"
+                                                   Grid.Column="0"
+                                                   Text="foo" />
+                                        <TextBlock x:Name="PART_Bar"
+                                                   Grid.Column="1"
+                                                   Text="bar" />
                                     </Grid>
                                 </ControlTemplate>
                             </local:PartControlTemplate.Root>
+
 
                             <local:PartControlTemplate.FooPart>
                                 <ControlTemplate TargetType="{x:Type local:FooControl}">
@@ -38,6 +43,7 @@
                                     <TextBox x:Name="PART_Bar" Text="{Binding Name, Source={x:Type Binding}, Mode=OneWay}" />
                                 </ControlTemplate>
                             </local:PartControlTemplate.BarPart>
+
                         </local:PartControlTemplate>
                     </Setter.Value>
                 </Setter>

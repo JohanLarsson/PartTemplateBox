@@ -18,7 +18,7 @@ namespace PartTemplateBox.Tests
                 "<ControlTemplate TargetType=\"ptb:FooControl\" xmlns=\"http://schemas.microsoft.com/winfx/2006/xaml/presentation\" xmlns:ptb=\"clr-namespace:PartTemplateBox;assembly=PartTemplateBox\">\r\n" +
                 "    <TextBox Text=\"{TemplateBinding FrameworkElement.ActualWidth}\" Name=\"PART_Foo\" />\r\n" +
                 "</ControlTemplate>";
-            var partXaml = GetSinglePart(xaml, "PART_Foo");
+            var partXaml = PartControlTemplate.GetSinglePart(xaml, "PART_Foo");
             var expected = "<TextBox Text=\"{TemplateBinding FrameworkElement.ActualWidth}\" Name=\"PART_Foo\" xmlns=\"http://schemas.microsoft.com/winfx/2006/xaml/presentation\" />";
             Assert.AreEqual(expected, partXaml);
         }
@@ -30,7 +30,7 @@ namespace PartTemplateBox.Tests
                 "<ControlTemplate TargetType=\"ptb:FooControl\" xmlns=\"http://schemas.microsoft.com/winfx/2006/xaml/presentation\" xmlns:ptb=\"clr-namespace:PartTemplateBox;assembly=PartTemplateBox\">\r\n" +
                 "    <TextBox Text=\"{TemplateBinding FrameworkElement.ActualWidth}\" />\r\n" +
                 "</ControlTemplate>";
-            var partXaml = GetSinglePart(xaml, "PART_Foo");
+            var partXaml = PartControlTemplate.GetSinglePart(xaml, "PART_Foo");
             var expected = "<TextBox Text=\"{TemplateBinding FrameworkElement.ActualWidth}\" Name=\"PART_Foo\" xmlns=\"http://schemas.microsoft.com/winfx/2006/xaml/presentation\" />";
             Assert.AreEqual(expected, partXaml);
         }
@@ -42,29 +42,9 @@ namespace PartTemplateBox.Tests
                 "<ControlTemplate TargetType=\"ptb:FooControl\" xmlns=\"http://schemas.microsoft.com/winfx/2006/xaml/presentation\" xmlns:ptb=\"clr-namespace:PartTemplateBox;assembly=PartTemplateBox\">\r\n" +
                 "    <TextBox Text=\"{TemplateBinding FrameworkElement.ActualWidth}\" Name=\"WRONG\"/>\r\n" +
                 "</ControlTemplate>";
-            var exception = Assert.Throws<XamlParseException>(() => GetSinglePart(xaml, "PART_Foo"));
+            var exception = Assert.Throws<XamlParseException>(() => PartControlTemplate.GetSinglePart(xaml, "PART_Foo"));
             string expected = "Expected name to be: 'PART_Foo' but was: 'WRONG'";
             Assert.AreEqual(expected, exception.Message);
-        }
-
-        private static string GetSinglePart(string xaml, string partName)
-        {
-            var element = XElement.Parse(xaml).Elements().Single();
-            var name = element.Attribute("Name");
-            if (name != null)
-            {
-                if (name.Value != partName)
-                {
-                    throw new XamlParseException($"Expected name to be: '{partName}' but was: '{name.Value}'");
-                }
-            }
-            else
-            {
-                element.Add(new XAttribute("Name", partName));
-            }
-
-
-            return element.ToString(SaveOptions.DisableFormatting);
         }
     }
 }
